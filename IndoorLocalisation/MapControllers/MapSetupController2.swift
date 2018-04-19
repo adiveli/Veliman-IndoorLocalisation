@@ -30,6 +30,7 @@ class MapSetupController2: UIViewController {
     }
     
     @IBAction func loadMapPressed(_ sender: Any) {
+        print("Sex")
     }
     
     
