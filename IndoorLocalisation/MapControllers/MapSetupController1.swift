@@ -8,7 +8,10 @@
 
 import UIKit
 
+
+
 class MapSetupController1: UIViewController {
+
 
     @IBOutlet weak var roomNameField: UITextField!
     @IBOutlet weak var heightField: UITextField!
@@ -17,6 +20,8 @@ class MapSetupController1: UIViewController {
     var roomName : String = ""
     var roomWidth : Double = 0.0
     var roomHeight : Double = 0.0
+    
+    var dl : AddMap?
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -58,8 +63,12 @@ class MapSetupController1: UIViewController {
         if segue.identifier == "toMapSetup2", let viewController = segue.destination as? MapSetupController2 {
             viewController.height = roomHeight
             viewController.width = roomWidth
-            //viewController.delegate = self
+            viewController.name = roomName
+            viewController.delegate = dl
+
         }
+        
+        
     }
     
 }

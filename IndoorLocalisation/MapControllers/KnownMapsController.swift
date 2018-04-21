@@ -11,7 +11,6 @@ import UIKit
 
 let storedMapsKey = "storedMaps"
 
-
 class KnownMapsController: UIViewController{
     
     @IBOutlet weak var tableView: UITableView!
@@ -23,7 +22,10 @@ class KnownMapsController: UIViewController{
     override func viewDidLoad() {
         super.viewDidLoad()
         
-
+        loadItems()
+        for map in maps{
+            print(map)
+        }
         // Do any additional setup after loading the view.
     }
 
@@ -61,11 +63,18 @@ class KnownMapsController: UIViewController{
         UserDefaults.standard.synchronize()
     }
     
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+        if segue.identifier == "toMapSetup1", let viewController = segue.destination as? MapSetupController1 {
+            viewController.dl = self
+        }
+        
+    }
+    
     
     
 }
 
-/*extension KnownMapsController: AddMap {
+extension KnownMapsController: AddMap {
     func addMap(map: Map) {
         maps.append(map)
         
@@ -77,7 +86,7 @@ class KnownMapsController: UIViewController{
         persistItems()
     }
     
-}*/
+}
 
 
 extension KnownMapsController : UITableViewDataSource{
@@ -121,10 +130,10 @@ extension KnownMapsController : UITableViewDataSource{
 
 extension KnownMapsController: UITableViewDelegate {
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        tableView.deselectRow(at: indexPath, animated: true)
+        //tableView.deselectRow(at: indexPath, animated: true)
         
         let map = maps[indexPath.row]
-        let detailMessage = "Width: \(map.width)\nHeight: \(map.height))"
+        let detailMessage = "Width: \(map.width)\nHeight: \(map.height)"
         let detailAlert = UIAlertController(title: "Details", message: detailMessage, preferredStyle: .alert)
         detailAlert.addAction(UIAlertAction(title: "OK", style: .default, handler: nil))
         self.present(detailAlert, animated: true, completion: nil)

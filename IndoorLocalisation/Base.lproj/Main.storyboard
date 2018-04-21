@@ -9,6 +9,11 @@
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
+    <customFonts key="customFonts">
+        <array key="Cochin.ttc">
+            <string>Cochin</string>
+        </array>
+    </customFonts>
     <scenes>
         <!--Welcome Controller-->
         <scene sceneID="tne-QT-ifu">
@@ -202,15 +207,15 @@
                                 <rect key="frame" x="4" y="20" width="362" height="637"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                             </imageView>
-                            <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" image="beaconIcon" translatesAutoresizingMaskIntoConstraints="NO" id="xLu-y4-HTI">
+                            <imageView contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" image="beaconIcon" translatesAutoresizingMaskIntoConstraints="NO" id="xLu-y4-HTI">
                                 <rect key="frame" x="97" y="175" width="40" height="40"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                             </imageView>
-                            <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" image="beaconIcon" translatesAutoresizingMaskIntoConstraints="NO" id="7fa-OV-zSe">
+                            <imageView contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" image="beaconIcon" translatesAutoresizingMaskIntoConstraints="NO" id="7fa-OV-zSe">
                                 <rect key="frame" x="167" y="175" width="40" height="40"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                             </imageView>
-                            <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" image="beaconIcon" translatesAutoresizingMaskIntoConstraints="NO" id="9L9-1D-aQ7">
+                            <imageView contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" image="beaconIcon" translatesAutoresizingMaskIntoConstraints="NO" id="9L9-1D-aQ7">
                                 <rect key="frame" x="237" y="175" width="40" height="40"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                             </imageView>
@@ -236,16 +241,51 @@
                                 <nil key="textColor"/>
                                 <nil key="highlightedColor"/>
                             </label>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Start by positioning the beacons in the relative positions." textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="3" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Nkq-PS-7T0">
+                                <rect key="frame" x="58" y="67" width="260" height="61"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <fontDescription key="fontDescription" name="Cochin" family="Cochin" pointSize="19"/>
+                                <nil key="textColor"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="For the setup process, continuosly shake the device" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="2" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="VmC-Ux-orZ">
+                                <rect key="frame" x="52" y="567" width="270" height="54"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <fontDescription key="fontDescription" name="Cochin" family="Cochin" pointSize="19"/>
+                                <nil key="textColor"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="r5j-Bt-hYf">
+                                <rect key="frame" x="25" y="328" width="324" height="21"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <fontDescription key="fontDescription" name="Cochin" family="Cochin" pointSize="18"/>
+                                <nil key="textColor"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                            <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="ZGR-Qj-hC4">
+                                <rect key="frame" x="124" y="502" width="127" height="31"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <state key="normal" image="AddMapButton"/>
+                                <connections>
+                                    <action selector="addMapPressed:" destination="XB6-1j-oC0" eventType="touchUpInside" id="Lhu-Zo-UBh"/>
+                                </connections>
+                            </button>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                         <viewLayoutGuide key="safeArea" id="D7U-7F-uBT"/>
                     </view>
                     <connections>
+                        <outlet property="addMapButton" destination="ZGR-Qj-hC4" id="WLu-gR-qjU"/>
                         <outlet property="beacon1" destination="xLu-y4-HTI" id="ZeP-LZ-Bad"/>
                         <outlet property="beacon2" destination="7fa-OV-zSe" id="4aN-Y4-Woe"/>
                         <outlet property="beacon3" destination="9L9-1D-aQ7" id="W34-FJ-Fyf"/>
                         <outlet property="heightLabel" destination="5LB-Bg-zQk" id="QJS-k9-TcU"/>
+                        <outlet property="instruction1Label" destination="Nkq-PS-7T0" id="rbq-2r-mdn"/>
+                        <outlet property="instruction2Label" destination="VmC-Ux-orZ" id="dOv-Ow-vK4"/>
+                        <outlet property="loadButton" destination="4Rw-r9-cij" id="Foj-hd-R12"/>
+                        <outlet property="positionLabel" destination="r5j-Bt-hYf" id="dtI-kP-R9m"/>
                         <outlet property="widthLabel" destination="xu9-nm-xs6" id="kSQ-cg-QUY"/>
+                        <segue destination="OSI-aD-bfh" kind="show" identifier="backToMaps" id="ANE-Sw-y9h"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="y8D-pg-0S5" userLabel="First Responder" sceneMemberID="firstResponder"/>
@@ -307,6 +347,10 @@
                                         </connections>
                                     </tableViewCell>
                                 </prototypes>
+                                <connections>
+                                    <outlet property="dataSource" destination="OSI-aD-bfh" id="hx2-st-kpq"/>
+                                    <outlet property="delegate" destination="OSI-aD-bfh" id="93Q-Jd-all"/>
+                                </connections>
                             </tableView>
                             <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="skR-6b-soi">
                                 <rect key="frame" x="22" y="52" width="40" height="22"/>
@@ -573,6 +617,7 @@
     <resources>
         <image name="+Btn" width="28" height="28"/>
         <image name="AddBtn" width="40" height="16"/>
+        <image name="AddMapButton" width="127" height="31"/>
         <image name="AddNewBeaconController" width="375" height="667"/>
         <image name="BeaconsController" width="375" height="667"/>
         <image name="CalibrateBtn" width="94" height="16"/>
@@ -590,4 +635,7 @@
         <image name="WelcomeController" width="375" height="667"/>
         <image name="beaconIcon" width="42" height="42"/>
     </resources>
+    <inferredMetricsTieBreakers>
+        <segue reference="8YC-XO-e77"/>
+    </inferredMetricsTieBreakers>
 </document>
