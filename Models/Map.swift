@@ -44,7 +44,7 @@ class Map: NSObject, NSCoding {
     
     
     
-    init(name: String, width: Double, height: Double, pos1x: CGFloat ,pos1y:CGFloat, pos2x: CGFloat,pos2y: CGFloat, pos3x: CGFloat,pos3y:CGFloat, mapPhoto: UIImage) {
+    init(name: String, width: Double, height: Double, pos1x: CGFloat ,pos1y:CGFloat, pos2x: CGFloat,pos2y: CGFloat, pos3x: CGFloat,pos3y:CGFloat, mapPhoto: UIImage?) {
         self.name = name
         self.width = width
         self.height = height
@@ -54,7 +54,7 @@ class Map: NSObject, NSCoding {
         self.position2y = pos2y
         self.position3x = pos3x
         self.position3y = pos3y
-        self.mapPhoto = mapPhoto
+        self.mapPhoto = mapPhoto ?? UIImage()
         
     }
     

@@ -29,7 +29,7 @@ class BeaconController: UIViewController
         
         locationManager.delegate = self
         locationManager.requestAlwaysAuthorization()
-        loadItems()
+        getItems()
 
         // Do any additional setup after loading the view.
     }
@@ -60,7 +60,7 @@ class BeaconController: UIViewController
         locationManager.stopRangingBeacons(in: beaconRegion)
     }
     
-    func loadItems() {
+    func getItems() {
         guard let storedItems = UserDefaults.standard.array(forKey: storedItemsKey) as? [Data] else { return }
         for itemData in storedItems {
             guard let item = NSKeyedUnarchiver.unarchiveObject(with: itemData) as? Item else { continue }
@@ -71,7 +71,7 @@ class BeaconController: UIViewController
     }
     
     
-    func persistItems() {
+    func saveItems() {
         var itemsData = [Data]()
         for item in items {
             let itemData = NSKeyedArchiver.archivedData(withRootObject: item)
@@ -85,7 +85,7 @@ class BeaconController: UIViewController
         if segue.identifier == "toNewBeaconController", let viewController = segue.destination as? AddNewBeaconController {
             viewController.delegate = self
         }
-        else if segue.identifier == "toLocalisation", let viewController = segue.destination as? LocalisationController {
+        else if segue.identifier == "toMaps", let viewController = segue.destination as? KnownMapsController {
             viewController.items = items
         }
     }
@@ -104,7 +104,7 @@ extension BeaconController: AddBeacon {
         
         
         startMonitoringItem(item)
-        persistItems()
+        saveItems()
     }
     
 }
@@ -138,7 +138,7 @@ extension BeaconController : UITableViewDataSource{
             tableView.deleteRows(at: [indexPath], with: .automatic)
             tableView.endUpdates()
             stopMonitoringItem(items[indexPath.row])
-            persistItems()
+            saveItems()
         }
     }
     

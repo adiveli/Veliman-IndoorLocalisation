@@ -116,7 +116,6 @@
 			isa = PBXGroup;
 			children = (
 				5FC19F692083558500FC46F1 /* LocalisationController.swift */,
-				5FC19F67208354C000FC46F1 /* MatrixSolver.swift */,
 				5FBE64B8208769F400B23EE0 /* Utilities.swift */,
 			);
 			path = Math;
@@ -163,6 +162,7 @@
 				5F0AC4EB20892A38007F010D /* BeaconControllers */,
 				5F0AC4EC20892A56007F010D /* Math */,
 				5FBB8D96207B6B08006C5049 /* WelcomeController.swift */,
+				5FC19F67208354C000FC46F1 /* MatrixSolver.swift */,
 				5FBB8D6F207B564A006C5049 /* Assets.xcassets */,
 				5FBB8D71207B564A006C5049 /* LaunchScreen.storyboard */,
 				5FBB8D74207B564A006C5049 /* Info.plist */,

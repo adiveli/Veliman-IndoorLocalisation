@@ -17,6 +17,8 @@ class MapSetupController1: UIViewController {
     @IBOutlet weak var heightField: UITextField!
     @IBOutlet weak var widthField: UITextField!
     
+    var items = [Item]()
+    
     var roomName : String = ""
     var roomWidth : Double = 0.0
     var roomHeight : Double = 0.0
@@ -65,6 +67,7 @@ class MapSetupController1: UIViewController {
             viewController.width = roomWidth
             viewController.name = roomName
             viewController.delegate = dl
+            viewController.items = self.items
 
         }
         

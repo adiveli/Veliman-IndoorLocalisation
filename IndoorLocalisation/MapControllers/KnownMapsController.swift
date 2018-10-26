@@ -16,17 +16,20 @@ class KnownMapsController: UIViewController{
     @IBOutlet weak var tableView: UITableView!
     
     var maps = [Map]()
+    var items = [Item]()
+    
+    var selectedCell : Int?
+    var lastSelection: NSIndexPath!
     
     
     
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        loadItems()
+        getItems()
         for map in maps{
             print(map)
         }
-        // Do any additional setup after loading the view.
     }
 
     override func didReceiveMemoryWarning() {
@@ -39,12 +42,20 @@ class KnownMapsController: UIViewController{
     }
     
     @IBAction func startLocalisationPressed(_ sender: Any) {
+        if(selectedCell != nil){
+            performSegue(withIdentifier: "toLocalizationController", sender: nil)
+        }else{
+            let detailAlert = UIAlertController(title: "Error", message: "You need to select a map!", preferredStyle: .alert)
+            detailAlert.addAction(UIAlertAction(title: "OK", style: .default, handler: nil))
+            self.present(detailAlert, animated: true, completion: nil)
+        }
     }
     
     @IBAction func backPressed(_ sender: Any) {
-        dismiss(animated: true, completion: nil)
+        performSegue(withIdentifier: "toBeacons", sender: nil)
     }
-    func loadItems() {
+    
+    func getItems() {
         guard let storedItems = UserDefaults.standard.array(forKey: storedMapsKey) as? [Data] else { return }
         for itemData in storedItems {
             guard let map = NSKeyedUnarchiver.unarchiveObject(with: itemData) as? Map else { continue }
@@ -53,7 +64,7 @@ class KnownMapsController: UIViewController{
         }
     }
     
-    func persistItems() {
+    func saveItems() {
         var itemsData = [Data]()
         for map in maps {
             let itemData = NSKeyedArchiver.archivedData(withRootObject: map)
@@ -66,6 +77,12 @@ class KnownMapsController: UIViewController{
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         if segue.identifier == "toMapSetup1", let viewController = segue.destination as? MapSetupController1 {
             viewController.dl = self
+            viewController.items = self.items
+        }
+        
+        if segue.identifier == "toLocalizationController", let viewController = segue.destination as? LocalisationController {
+            viewController.chosenMap = maps[selectedCell!]
+            viewController.items = self.items
         }
         
     }
@@ -83,7 +100,7 @@ extension KnownMapsController: AddMap {
         tableView.insertRows(at: [newIndexPath], with: .automatic)
         tableView.endUpdates()
         
-        persistItems()
+        saveItems()
     }
     
 }
@@ -97,7 +114,7 @@ extension KnownMapsController : UITableViewDataSource{
         
         let cell = tableView.dequeueReusableCell(withIdentifier: "MapCell", for: indexPath) as! MapCell
         cell.map = maps[indexPath.row]
-        
+
         return cell
     }
     
@@ -116,7 +133,7 @@ extension KnownMapsController : UITableViewDataSource{
             maps.remove(at: indexPath.row)
             tableView.deleteRows(at: [indexPath], with: .automatic)
             tableView.endUpdates()
-            persistItems()
+            saveItems()
         }
     }
     
@@ -130,14 +147,26 @@ extension KnownMapsController : UITableViewDataSource{
 
 extension KnownMapsController: UITableViewDelegate {
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        //tableView.deselectRow(at: indexPath, animated: true)
         
+        if self.lastSelection != nil {
+            self.tableView.cellForRow(at: self.lastSelection as IndexPath)?.accessoryType = .none
+        }
+        
+        self.tableView.cellForRow(at: indexPath)?.accessoryType = .checkmark
+        
+        self.lastSelection = indexPath as NSIndexPath
+        
+        self.tableView.deselectRow(at: indexPath, animated: true)
+    
+        selectedCell = indexPath.row
         let map = maps[indexPath.row]
         let detailMessage = "Width: \(map.width)\nHeight: \(map.height)"
         let detailAlert = UIAlertController(title: "Details", message: detailMessage, preferredStyle: .alert)
         detailAlert.addAction(UIAlertAction(title: "OK", style: .default, handler: nil))
         self.present(detailAlert, animated: true, completion: nil)
     }
+    
+    
 }
 
 

@@ -13,7 +13,7 @@ protocol AddMap {
 }
 
 
-class MapSetupController2: UIViewController {
+class MapSetupController2: UIViewController,UINavigationControllerDelegate, UIImagePickerControllerDelegate {
     @IBOutlet weak var heightLabel: UILabel!
     @IBOutlet weak var widthLabel: UILabel!
     @IBOutlet weak var beacon2: UIImageView!
@@ -23,8 +23,12 @@ class MapSetupController2: UIViewController {
     @IBOutlet weak var instruction2Label: UILabel!
     @IBOutlet weak var loadButton: UIButton!
     
+    @IBOutlet weak var mapImage: UIImageView!
+    
     @IBOutlet weak var addMapButton: UIButton!
     @IBOutlet weak var positionLabel: UILabel!
+    
+    var items = [Item]()
     
     var delegate: AddMap?
     
@@ -38,15 +42,17 @@ class MapSetupController2: UIViewController {
     
     var step : Int = 0
     
+    var imagePicker = UIImagePickerController()
+    
     
     override func viewDidLoad() {
         super.viewDidLoad()
         addMapButton.isHidden = true
         heightLabel.text = "\(String(height))"
         widthLabel.text = "\(String(width))"
+        imagePicker.delegate = self
         
         setGestureRecognizer()
-        // Do any additional setup after loading the view.
     }
 
     override func didReceiveMemoryWarning() {
@@ -54,16 +60,22 @@ class MapSetupController2: UIViewController {
         // Dispose of any resources that can be recreated.
     }
     
+    
+    
+    //keep position of beacons in pixels
     @IBAction func addMapPressed(_ sender: Any) {
         let name = self.name.trimmingCharacters(in: CharacterSet.whitespacesAndNewlines)
-        let b1Posx = beacon1.center.x
-        let b1Posy = beacon1.center.y
-        let b2Posx = beacon2.center.x
-        let b2Posy = beacon2.center.y
-        let b3Posx = beacon3.center.x
-        let b3Posy = beacon3.center.y
+        let b1Posx = toMeters(verticalMeters: height, horizontalMeters: width, xPos: Double(beacon1.center.x), yPos: Double(beacon1.center.y))[0]
+        let b1Posy = toMeters(verticalMeters: height, horizontalMeters: width, xPos: Double(beacon1.center.x), yPos: Double(beacon1.center.y))[1]
+        let b2Posx = toMeters(verticalMeters: height, horizontalMeters: width, xPos: Double(beacon2.center.x), yPos: Double(beacon2.center.y))[0]
+        let b2Posy = toMeters(verticalMeters: height, horizontalMeters: width, xPos: Double(beacon2.center.x), yPos: Double(beacon2.center.y))[1]
+        let b3Posx = toMeters(verticalMeters: height, horizontalMeters: width, xPos: Double(beacon3.center.x), yPos: Double(beacon3.center.y))[0]
+        let b3Posy = toMeters(verticalMeters: height, horizontalMeters: width, xPos: Double(beacon3.center.x), yPos: Double(beacon3.center.y))[1]
         
-        let newMap = Map(name: name, width: width, height: height, pos1x: b1Posx, pos1y: b1Posy, pos2x: b2Posx, pos2y: b2Posy, pos3x: b3Posx, pos3y: b3Posy, mapPhoto: UIImage())
+        print(beacon1.center.x)
+        print(beacon1.center.y)
+        
+        let newMap = Map(name: name, width: width, height: height, pos1x: CGFloat(b1Posx), pos1y: CGFloat(b1Posy), pos2x: CGFloat(b2Posx), pos2y: CGFloat(b2Posy), pos3x: CGFloat(b3Posx), pos3y: CGFloat(b3Posy), mapPhoto: mapImage.image)
         
         delegate?.addMap(map: newMap)
         performSegue(withIdentifier: "backToMaps", sender: nil)
@@ -71,10 +83,19 @@ class MapSetupController2: UIViewController {
         
     }
     @IBAction func loadMapPressed(_ sender: Any) {
-        print("Sex")
+        if UIImagePickerController.isSourceTypeAvailable(.savedPhotosAlbum)
+        {
+            print("Button capture")
+            imagePicker.sourceType = .savedPhotosAlbum;
+            imagePicker.allowsEditing = false
+            
+            self.present(imagePicker, animated: true, completion: nil)
+        }
     }
     
-    func toMeters(verticalMeters: Double,horizontalMeters: Double,xPos: Double,yPos: Double)->String{
+    
+    //pixel -> meter -- based on description of map
+    func toMeters(verticalMeters: Double,horizontalMeters: Double,xPos: Double,yPos: Double)->[Double]{
         
         
         let yScale = Double(self.view.frame.height)/verticalMeters
@@ -83,10 +104,11 @@ class MapSetupController2: UIViewController {
         let xMeaning = xPos/xScale
         let yMeaning = yPos/yScale
         
-        return "x:\(xMeaning.rounded(toPlaces: 2)) y:\(yMeaning.rounded(toPlaces: 2))"
+        return [xMeaning.rounded(toPlaces: 2), yMeaning.rounded(toPlaces: 2)]
         
     }
     
+    //move beacons interactively
     func setGestureRecognizer(){
         
         beacon1.isUserInteractionEnabled = false
@@ -112,13 +134,19 @@ class MapSetupController2: UIViewController {
         self.becomeFirstResponder()
     }
     
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+        if segue.identifier == "backToMaps", let viewController = segue.destination as? KnownMapsController {
+            viewController.items = self.items    
+        }
+    }
+    
  
     
     @objc func moveBeacon(recognizer: UIPanGestureRecognizer) {
      let translation = recognizer.translation(in: self.view)
      if let myView = recognizer.view {
      myView.center = CGPoint(x: myView.center.x + translation.x, y: myView.center.y + translation.y)
-        positionLabel.text = toMeters(verticalMeters: height, horizontalMeters: width, xPos: Double(myView.center.x), yPos: Double(myView.center.y))
+        positionLabel.text = "x=\(toMeters(verticalMeters: height, horizontalMeters: width, xPos: Double(myView.center.x), yPos: Double(myView.center.y))[0]),y=\(toMeters(verticalMeters: height, horizontalMeters: width, xPos: Double(myView.center.x), yPos: Double(myView.center.y))[1])"
      }
         
         
@@ -157,6 +185,14 @@ class MapSetupController2: UIViewController {
         }
 
     }
+    
+    func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [String : Any]) {
+        let chosenImage = info[UIImagePickerControllerOriginalImage] as! UIImage
+        mapImage.image = chosenImage
+        
+        dismiss(animated: true, completion: nil)
+    }
+
     
     
     

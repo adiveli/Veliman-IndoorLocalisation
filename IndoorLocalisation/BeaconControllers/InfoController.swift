@@ -97,6 +97,7 @@ class InfoController: UIViewController, UIScrollViewDelegate {
         dismiss(animated: true, completion: nil)
     }
     
+    
     @objc func updateTime() {
         timeLabel.text = "\(timeFormatted(totalTime))"
         
@@ -169,9 +170,11 @@ class InfoController: UIViewController, UIScrollViewDelegate {
                 self.startCalibrateButton.alpha = 0.0
                 self.finishBtn.alpha = 0.0
         }
-            // Show the "Let's Start" button in the last slide (with a fade in animation)                     UIView.animate(withDuration: 1.0, animations: { () -> Void in
+         
         
     }
+    
+    ///////////////ASDASD///////////////
     
     func scrollViewSettings(){
         
