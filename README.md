@@ -8,3 +8,5 @@ Application workflow
 ->Choose a configured map and enjoy the localization process.
 
 I used RFDuino microcontrollers for this project.(Arduino with BLE module)
+
+No Auto-Layout(It was built for iPhone 7)
